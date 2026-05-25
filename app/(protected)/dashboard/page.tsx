@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { signOut } from '@/actions/auth'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -35,6 +36,9 @@ export default async function DashboardPage() {
               </div>
             </div>
             <span className="ds-badge ds-badge--secondary">user</span>
+          </div>
+          <div style={{ padding: '0 var(--space-6) var(--space-4)', display: 'flex', justifyContent: 'flex-end' }}>
+            <ThemeToggle />
           </div>
         </div>
 

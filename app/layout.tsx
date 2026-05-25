@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -25,10 +27,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="light">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <head>
+        {/*
+          Runs synchronously before React hydrates — reads localStorage and
+          sets data-theme on <html> immediately so there is no flash of the
+          wrong theme on initial load.
+        */}
+        <Script src="/theme-init.js" strategy="beforeInteractive" />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
