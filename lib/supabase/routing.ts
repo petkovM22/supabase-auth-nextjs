@@ -1,7 +1,9 @@
+import type { Role } from '@/types/auth'
+
 export function getRedirectPath(
   pathname: string,
   isAuthenticated: boolean,
-  role: string | null,
+  role: Role | null,
   baseUrl: string
 ): string | null {
   const isAuthRoute = pathname === '/login' || pathname === '/signup'
