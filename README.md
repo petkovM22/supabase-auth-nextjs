@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Supabase Auth — Next.js App Router
 
-## Getting Started
+Email + password authentication with admin/user RBAC, built with Next.js 14 and Supabase.
 
-First, run the development server:
+## Features
+
+- Email + password sign up, log in, log out
+- Admin / user role split via Postgres `profiles` table
+- Middleware-enforced route protection (server-side, before page renders)
+- Row-Level Security — users cannot escalate their own role
+
+## Routes
+
+| Path | Access |
+|---|---|
+| `/login`, `/signup` | Public (redirects if already logged in) |
+| `/dashboard` | Authenticated users |
+| `/admin` | Admin role only |
+
+## Setup
+
+### 1. Clone and install
+
+```bash
+npm install
+```
+
+### 2. Create a Supabase project
+
+Go to [supabase.com](https://supabase.com) and create a new project.
+
+### 3. Configure environment variables
+
+```bash
+cp .env.example .env.local
+```
+
+Fill in your project credentials from **Supabase Dashboard → Settings → API**:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+### 4. Apply the database migration
+
+In **Supabase Dashboard → SQL Editor**, run the contents of:
+
+```
+db/migrations/001_profiles.sql
+```
+
+This creates the `profiles` table, RLS policies, and the signup trigger.
+
+> **Note:** If your Supabase project has **email confirmation enabled** (the default), users must confirm their email before they can log in. To disable it for development: **Authentication → Providers → Email → disable "Confirm email"**.
+
+### 5. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) — you'll be redirected to `/login`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 6. Promote a user to admin
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+In **Supabase Dashboard → Table Editor → profiles**, update the `role` column to `'admin'` for the desired user.
 
-## Learn More
+## Testing
 
-To learn more about Next.js, take a look at the following resources:
+### Unit tests
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm test
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+9 tests covering the routing logic in `lib/supabase/routing.ts`.
 
-## Deploy on Vercel
+### E2E tests
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Requires real Supabase credentials in `.env.local` and email confirmation **disabled**.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run test:e2e
+```
+
+## Tech Stack
+
+- [Next.js 14](https://nextjs.org) — App Router
+- [Supabase](https://supabase.com) — Auth + Postgres
+- [@supabase/ssr](https://github.com/supabase/ssr) — Server-side session management
+- [Tailwind CSS](https://tailwindcss.com)
+- [Vitest](https://vitest.dev) — Unit tests
+- [Playwright](https://playwright.dev) — E2E tests

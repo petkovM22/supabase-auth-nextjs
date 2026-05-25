@@ -50,11 +50,12 @@ export async function middleware(request: NextRequest) {
   const redirectPath = getRedirectPath(pathname, !!user, role as Role | null, baseUrl)
 
   if (redirectPath) {
-    // Copy refreshed session cookies onto the redirect response to avoid
-    // dropping token updates mid-refresh (would cause redirect loops)
+    // Copy refreshed session cookies onto the redirect response, preserving
+    // all cookie options (httpOnly, secure, sameSite, path, maxAge) to avoid
+    // downgrading security or dropping token rotation on redirect.
     const redirectResponse = NextResponse.redirect(redirectPath)
-    supabaseResponse.cookies.getAll().forEach((cookie) => {
-      redirectResponse.cookies.set(cookie.name, cookie.value)
+    supabaseResponse.cookies.getAll().forEach(({ name, value, ...options }) => {
+      redirectResponse.cookies.set(name, value, options)
     })
     return redirectResponse
   }
@@ -64,7 +65,11 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and static files
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    // Only run middleware on auth and protected routes.
+    // Excludes: Next.js internals, static files, API routes, and public assets.
+    '/login',
+    '/signup',
+    '/dashboard/:path*',
+    '/admin/:path*',
   ],
 }

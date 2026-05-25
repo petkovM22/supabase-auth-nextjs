@@ -12,7 +12,7 @@ export async function signUp(
   const email = formData.get('email') as string
   const password = formData.get('password') as string
 
-  const { error } = await supabase.auth.signUp({ email, password })
+  const { data, error } = await supabase.auth.signUp({ email, password })
 
   if (error) {
     const msg = error.message.toLowerCase()
@@ -20,6 +20,12 @@ export async function signUp(
       return { error: 'An account with this email already exists' }
     }
     return { error: 'Something went wrong, please try again' }
+  }
+
+  // If email confirmation is enabled in Supabase, session will be null and
+  // the user must confirm their email before they can log in.
+  if (!data.session) {
+    return { error: 'Check your email to confirm your account before logging in.' }
   }
 
   revalidatePath('/', 'layout')
