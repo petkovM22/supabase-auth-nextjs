@@ -15,9 +15,13 @@ export async function signUp(
   const { data, error } = await supabase.auth.signUp({ email, password })
 
   if (error) {
+    console.error('[signUp] Supabase error:', error.message)
     const msg = error.message.toLowerCase()
     if (msg.includes('already registered') || msg.includes('user already exists')) {
       return { error: 'An account with this email already exists' }
+    }
+    if (msg.includes('rate limit')) {
+      return { error: 'Too many sign-up attempts — please wait a few minutes and try again.' }
     }
     return { error: 'Something went wrong, please try again' }
   }
