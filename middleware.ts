@@ -38,18 +38,25 @@ export async function middleware(request: NextRequest) {
   // Fetch role only for admin routes (avoid DB call on every request)
   let role: string | null = null
   if (user && pathname.startsWith('/admin')) {
-    const { data: profile } = await supabase
+    const { data: profile, error: roleError } = await supabase
       .from('profiles')
       .select('role')
       .eq('id', user.id)
       .single()
+    if (roleError) console.error('[middleware] role fetch failed:', roleError.message)
     role = profile?.role ?? null
   }
 
   const redirectPath = getRedirectPath(pathname, !!user, role as Role | null, baseUrl)
 
   if (redirectPath) {
-    return NextResponse.redirect(redirectPath)
+    // Copy refreshed session cookies onto the redirect response to avoid
+    // dropping token updates mid-refresh (would cause redirect loops)
+    const redirectResponse = NextResponse.redirect(redirectPath)
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value)
+    })
+    return redirectResponse
   }
 
   return supabaseResponse
