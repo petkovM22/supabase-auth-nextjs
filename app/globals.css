@@ -2,26 +2,388 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   Tessera Design System — Foundation Tokens
+   Adapted from claude.ai/design for this Next.js project.
+   Fonts are loaded locally via next/font (GeistVF.woff).
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ---- Font stack (uses next/font local variables) ---- */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+  --font-scale: 1;
+
+  /* ---- Primary hue ---- */
+  --primary-h: 240;
+  --primary-c: 0.02;
+  --primary-l: 0.205;
+
+  /* ---- Radius scale ---- */
+  --radius: 0.625rem;
+  --radius-xs: calc(var(--radius) - 6px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-full: 9999px;
+
+  /* ---- Typography scale ---- */
+  --text-xs:   calc(0.75rem  * var(--font-scale));
+  --text-sm:   calc(0.875rem * var(--font-scale));
+  --text-base: calc(1rem     * var(--font-scale));
+  --text-lg:   calc(1.125rem * var(--font-scale));
+  --text-xl:   calc(1.25rem  * var(--font-scale));
+  --text-2xl:  calc(1.5rem   * var(--font-scale));
+  --text-3xl:  calc(1.875rem * var(--font-scale));
+  --text-4xl:  calc(2.25rem  * var(--font-scale));
+  --text-5xl:  calc(3rem     * var(--font-scale));
+
+  --leading-tight:   1.15;
+  --leading-snug:    1.35;
+  --leading-normal:  1.55;
+  --leading-relaxed: 1.75;
+
+  --tracking-tight:  -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide:   0.04em;
+
+  /* ---- Spacing scale (4px base) ---- */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* ---- Shadows ---- */
+  --shadow-xs: 0 1px 1px 0 rgb(0 0 0 / 0.04);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05), 0 1px 1px -1px rgb(0 0 0 / 0.04);
+  --shadow-md: 0 4px 6px -2px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+  --shadow-lg: 0 12px 24px -6px rgb(0 0 0 / 0.08), 0 4px 8px -4px rgb(0 0 0 / 0.04);
+  --shadow-xl: 0 24px 48px -12px rgb(0 0 0 / 0.18);
+  --shadow-focus: 0 0 0 3px color-mix(in oklch, var(--ring) 35%, transparent);
+
+  /* ---- Motion ---- */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+  --duration-slow: 260ms;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ---- Light theme (default) ---- */
+:root,
+:root[data-theme="light"] {
+  --background:           oklch(1 0 0);
+  --foreground:           oklch(0.145 0 0);
+  --card:                 oklch(1 0 0);
+  --card-foreground:      oklch(0.145 0 0);
+  --popover:              oklch(0.995 0 0);
+  --popover-foreground:   oklch(0.145 0 0);
+  --primary:              oklch(var(--primary-l) var(--primary-c) var(--primary-h));
+  --primary-foreground:   oklch(0.985 0 0);
+  --secondary:            oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted:                oklch(0.97 0 0);
+  --muted-foreground:     oklch(0.51 0 0);
+  --accent:               oklch(0.95 0 0);
+  --accent-foreground:    oklch(0.205 0 0);
+  --destructive:          oklch(0.58 0.218 27);
+  --destructive-foreground: oklch(0.99 0 0);
+  --success:              oklch(0.62 0.16 145);
+  --success-foreground:   oklch(0.99 0 0);
+  --warning:              oklch(0.74 0.16 75);
+  --warning-foreground:   oklch(0.18 0 0);
+  --info:                 oklch(0.62 0.16 235);
+  --info-foreground:      oklch(0.99 0 0);
+  --border:               oklch(0.91 0 0);
+  --border-subtle:        oklch(0.945 0 0);
+  --input:                oklch(0.91 0 0);
+  --ring:                 oklch(var(--primary-l) var(--primary-c) var(--primary-h));
+  --surface-1:            oklch(0.985 0 0);
+  --surface-2:            oklch(0.965 0 0);
 }
+
+/* ---- Dark theme ---- */
+:root[data-theme="dark"] {
+  --background:           oklch(0.145 0 0);
+  --foreground:           oklch(0.985 0 0);
+  --card:                 oklch(0.185 0 0);
+  --card-foreground:      oklch(0.985 0 0);
+  --popover:              oklch(0.205 0 0);
+  --popover-foreground:   oklch(0.985 0 0);
+  --primary:              oklch(0.92 var(--primary-c) var(--primary-h));
+  --primary-foreground:   oklch(0.18 0 0);
+  --secondary:            oklch(0.245 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted:                oklch(0.245 0 0);
+  --muted-foreground:     oklch(0.66 0 0);
+  --accent:               oklch(0.27 0 0);
+  --accent-foreground:    oklch(0.985 0 0);
+  --destructive:          oklch(0.68 0.205 22);
+  --destructive-foreground: oklch(0.99 0 0);
+  --success:              oklch(0.72 0.16 145);
+  --success-foreground:   oklch(0.12 0 0);
+  --warning:              oklch(0.82 0.16 80);
+  --warning-foreground:   oklch(0.18 0 0);
+  --info:                 oklch(0.72 0.15 230);
+  --info-foreground:      oklch(0.12 0 0);
+  --border:               oklch(0.27 0 0);
+  --border-subtle:        oklch(0.22 0 0);
+  --input:                oklch(0.27 0 0);
+  --ring:                 oklch(0.92 var(--primary-c) var(--primary-h));
+  --surface-1:            oklch(0.205 0 0);
+  --surface-2:            oklch(0.245 0 0);
+  --shadow-xs: 0 1px 1px 0 rgb(0 0 0 / 0.4);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.45), 0 1px 1px -1px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 6px -2px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 12px 24px -6px rgb(0 0 0 / 0.55), 0 4px 8px -4px rgb(0 0 0 / 0.45);
+  --shadow-xl: 0 24px 48px -12px rgb(0 0 0 / 0.7);
+}
+
+/* ============================================================
+   Base reset
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
 
 body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+
+::selection { background: color-mix(in oklch, var(--primary) 25%, transparent); }
+
+/* ============================================================
+   FOCUS RING (shared)
+   ============================================================ */
+.ds-focus:focus-visible,
+.ds-input:focus-visible,
+.ds-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+  border-color: var(--ring);
+}
+
+/* ============================================================
+   BUTTON
+   ============================================================ */
+.ds-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  white-space: nowrap;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  user-select: none;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    color      var(--duration-fast) var(--ease-out),
+    border     var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    transform  var(--duration-fast) var(--ease-out);
+}
+.ds-btn:disabled { opacity: 0.5; pointer-events: none; }
+.ds-btn:active:not(:disabled) { transform: translateY(0.5px); }
+
+.ds-btn--sm  { height: 32px; padding: 0 var(--space-3); font-size: var(--text-sm); }
+.ds-btn--md  { height: 36px; padding: 0 var(--space-4); font-size: var(--text-sm); }
+.ds-btn--lg  { height: 44px; padding: 0 var(--space-6); font-size: var(--text-base); }
+
+.ds-btn--primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: var(--shadow-xs);
+}
+.ds-btn--primary:hover:not(:disabled) {
+  background: color-mix(in oklch, var(--primary) 90%, var(--foreground));
+}
+
+.ds-btn--secondary {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  border-color: var(--border);
+}
+.ds-btn--secondary:hover:not(:disabled) { background: var(--accent); }
+
+.ds-btn--outline {
+  background: var(--background);
+  color: var(--foreground);
+  border-color: var(--border);
+  box-shadow: var(--shadow-xs);
+}
+.ds-btn--outline:hover:not(:disabled) { background: var(--accent); }
+
+.ds-btn--ghost {
+  background: transparent;
+  color: var(--foreground);
+}
+.ds-btn--ghost:hover:not(:disabled) { background: var(--accent); }
+
+.ds-btn--destructive {
+  background: var(--destructive);
+  color: var(--destructive-foreground);
+  box-shadow: var(--shadow-xs);
+}
+.ds-btn--destructive:hover:not(:disabled) {
+  background: color-mix(in oklch, var(--destructive) 88%, black);
+}
+
+/* ============================================================
+   INPUT / FIELD
+   ============================================================ */
+.ds-input {
+  width: 100%;
+  height: 36px;
+  padding: 0 var(--space-3);
+  background: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--input);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  transition:
+    border var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+.ds-input::placeholder { color: var(--muted-foreground); }
+.ds-input:disabled { opacity: 0.5; cursor: not-allowed; }
+.ds-input[aria-invalid="true"] { border-color: var(--destructive); }
+
+.ds-input-group { position: relative; display: flex; align-items: center; }
+.ds-input-group .ds-input { padding-left: 36px; }
+.ds-input-group__icon {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  color: var(--muted-foreground); pointer-events: none; display: flex;
+}
+
+.ds-field  { display: flex; flex-direction: column; gap: var(--space-2); }
+.ds-label  { font-size: var(--text-sm); font-weight: 500; color: var(--foreground); display: flex; align-items: center; justify-content: space-between; }
+.ds-help   { font-size: var(--text-xs); color: var(--muted-foreground); }
+.ds-error  { font-size: var(--text-xs); color: var(--destructive); }
+
+/* ============================================================
+   CARD
+   ============================================================ */
+.ds-card {
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+}
+.ds-card__header {
+  padding: var(--space-6) var(--space-6) var(--space-4);
+  display: flex; flex-direction: column; gap: var(--space-1);
+}
+.ds-card__title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+}
+.ds-card__desc {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  margin-top: 2px;
+}
+.ds-card__body   { padding: 0 var(--space-6) var(--space-6); }
+.ds-card__footer {
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--border-subtle);
+  display: flex; align-items: center;
+}
+
+/* ============================================================
+   ALERT / FEEDBACK BANNER
+   ============================================================ */
+.ds-alert {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--background);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+}
+.ds-alert--destructive {
+  border-color: color-mix(in oklch, var(--destructive) 30%, transparent);
+  background: color-mix(in oklch, var(--destructive) 6%, var(--background));
+  color: var(--destructive);
+}
+.ds-alert--success {
+  border-color: color-mix(in oklch, var(--success) 30%, transparent);
+  background: color-mix(in oklch, var(--success) 6%, var(--background));
+  color: var(--success);
+}
+
+/* ============================================================
+   BADGE
+   ============================================================ */
+.ds-badge {
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  height: 20px; padding: 0 var(--space-2);
+  font-size: var(--text-xs); font-weight: 500;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.ds-badge--default     { background: var(--primary); color: var(--primary-foreground); }
+.ds-badge--secondary   { background: var(--secondary); color: var(--secondary-foreground); border-color: var(--border); }
+.ds-badge--outline     { border-color: var(--border); color: var(--foreground); }
+.ds-badge--success     { background: color-mix(in oklch, var(--success) 14%, var(--background)); color: var(--success); border-color: color-mix(in oklch, var(--success) 25%, transparent); }
+.ds-badge--destructive { background: var(--destructive); color: var(--destructive-foreground); }
+
+/* ============================================================
+   DIVIDER / OR separator
+   ============================================================ */
+.ds-divider {
+  display: flex; align-items: center; gap: var(--space-3);
+  color: var(--muted-foreground); font-size: var(--text-xs);
+  margin: var(--space-1) 0;
+}
+.ds-divider::before,
+.ds-divider::after {
+  content: "";
+  flex: 1; height: 1px;
+  background: var(--border);
+}
+
+/* ============================================================
+   AVATAR
+   ============================================================ */
+.ds-avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm); font-weight: 500;
+  overflow: hidden; flex-shrink: 0;
+}
+.ds-avatar--lg { width: 48px; height: 48px; font-size: var(--text-base); }
+
+/* ============================================================
+   LAYOUT helpers
+   ============================================================ */
+.ds-muted { color: var(--muted-foreground); }
+
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  .text-balance { text-wrap: balance; }
 }
