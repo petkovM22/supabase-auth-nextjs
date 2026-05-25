@@ -31,23 +31,29 @@ export default function LoginPage() {
           </p>
         )}
 
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          required
-          autoComplete="email"
-          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
-        />
+        <label className="flex flex-col gap-1">
+          <span className="text-sm font-medium">Email</span>
+          <input
+            name="email"
+            type="email"
+            placeholder="you@example.com"
+            required
+            autoComplete="email"
+            className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+          />
+        </label>
 
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          required
-          autoComplete="current-password"
-          className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
-        />
+        <label className="flex flex-col gap-1">
+          <span className="text-sm font-medium">Password</span>
+          <input
+            name="password"
+            type="password"
+            placeholder="••••••••"
+            required
+            autoComplete="current-password"
+            className="border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+          />
+        </label>
 
         <button
           type="submit"
