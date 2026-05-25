@@ -14,7 +14,21 @@ create policy "Users can read own profile"
   for select
   using (auth.uid() = id);
 
--- No insert/update policies for users — only the trigger and service role can write
+-- Explicitly deny insert, update, delete for all users (RLS default-deny, but explicit is safer)
+create policy "Users cannot insert profiles"
+  on public.profiles
+  for insert
+  with check (false);
+
+create policy "Users cannot update profiles"
+  on public.profiles
+  for update
+  using (false);
+
+create policy "Users cannot delete profiles"
+  on public.profiles
+  for delete
+  using (false);
 
 -- Trigger function: auto-create profile row on new user signup
 create or replace function public.handle_new_user()
