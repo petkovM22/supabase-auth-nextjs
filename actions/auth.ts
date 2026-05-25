@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/server'
 
 export async function signUp(
   formData: FormData
-): Promise<{ error: string } | never> {
+): Promise<{ error: string } | { info: string } | never> {
   const supabase = await createClient()
 
   const email = formData.get('email') as string
@@ -22,10 +22,10 @@ export async function signUp(
     return { error: 'Something went wrong, please try again' }
   }
 
-  // If email confirmation is enabled in Supabase, session will be null and
-  // the user must confirm their email before they can log in.
+  // If email confirmation is enabled in Supabase, session will be null.
+  // Return an info message (not an error) so the UI can display it appropriately.
   if (!data.session) {
-    return { error: 'Check your email to confirm your account before logging in.' }
+    return { info: 'Account created! Check your email and click the confirmation link to log in.' }
   }
 
   revalidatePath('/', 'layout')

@@ -5,14 +5,19 @@ import { signUp } from '@/actions/auth'
 
 export default function SignupPage() {
   const [error, setError] = useState<string | null>(null)
+  const [info, setInfo] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
   async function handleSubmit(formData: FormData) {
     setLoading(true)
     setError(null)
+    setInfo(null)
     const result = await signUp(formData)
-    if (result?.error) {
+    if (result && 'error' in result) {
       setError(result.error)
+      setLoading(false)
+    } else if (result && 'info' in result) {
+      setInfo(result.info)
       setLoading(false)
     }
   }
@@ -26,8 +31,14 @@ export default function SignupPage() {
         <h1 className="text-2xl font-bold">Create account</h1>
 
         {error && (
-          <p role="alert" className="text-red-600 text-sm">
+          <p role="alert" className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-3 py-2">
             {error}
+          </p>
+        )}
+
+        {info && (
+          <p role="status" className="text-green-700 text-sm bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+            {info}
           </p>
         )}
 
