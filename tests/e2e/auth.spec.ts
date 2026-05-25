@@ -1,5 +1,8 @@
 import { test, expect } from '@playwright/test'
 
+// Serial mode: tests depend on each other (sign-up must run before login tests)
+test.describe.configure({ mode: 'serial' })
+
 // Use a unique email per test run to avoid conflicts
 const testEmail = `test+${Date.now()}@example.com`
 const testPassword = 'password123'
