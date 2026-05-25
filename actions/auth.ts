@@ -15,7 +15,8 @@ export async function signUp(
   const { error } = await supabase.auth.signUp({ email, password })
 
   if (error) {
-    if (error.message.toLowerCase().includes('already registered')) {
+    const msg = error.message.toLowerCase()
+    if (msg.includes('already registered') || msg.includes('user already exists')) {
       return { error: 'An account with this email already exists' }
     }
     return { error: 'Something went wrong, please try again' }
