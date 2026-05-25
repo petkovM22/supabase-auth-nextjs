@@ -33,22 +33,9 @@ export default function SignupPage() {
     }}>
       <div style={{ width: '100%', maxWidth: 400 }}>
 
-        {/* Logo mark */}
+        {/* Logo */}
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 'var(--space-6)' }}>
-          <div style={{
-            width: 40, height: 40,
-            background: 'var(--foreground)',
-            color: 'var(--background)',
-            borderRadius: 'var(--radius-lg)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
-              <rect x="2"  y="2"  width="6" height="6" rx="1.5" fill="currentColor" />
-              <rect x="12" y="2"  width="6" height="6" rx="1.5" fill="currentColor" opacity="0.5" />
-              <rect x="2"  y="12" width="6" height="6" rx="1.5" fill="currentColor" opacity="0.5" />
-              <rect x="12" y="12" width="6" height="6" rx="1.5" fill="currentColor" />
-            </svg>
-          </div>
+          <img src="/logo.png" alt="Logo" style={{ width: 72, height: 72, objectFit: 'contain' }} />
         </div>
 
         <form action={handleSubmit} className="ds-card">
