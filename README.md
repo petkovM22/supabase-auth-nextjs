@@ -1,6 +1,8 @@
 # Supabase Auth — Next.js App Router
 
-Email + password authentication with admin/user RBAC, built with Next.js 14 and Supabase.
+Email + password authentication with admin/user RBAC, built with Next.js 16 and Supabase.
+
+**Live demo:** https://supabase-auth-nextjs-omega.vercel.app
 
 ## Features
 
@@ -86,7 +88,7 @@ npm run test:e2e
 
 ## Tech Stack
 
-- [Next.js 14](https://nextjs.org) — App Router
+- [Next.js 16](https://nextjs.org) — App Router
 - [Supabase](https://supabase.com) — Auth + Postgres
 - [@supabase/ssr](https://github.com/supabase/ssr) — Server-side session management
 - [Tailwind CSS](https://tailwindcss.com)
