@@ -26,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="light">
+    <html lang="en" data-theme="light" suppressHydrationWarning>
       <head>
         {/*
           Runs synchronously before React hydrates — reads localStorage and
